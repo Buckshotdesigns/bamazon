@@ -1,7 +1,8 @@
-
+// required packages 
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-
+var Table = require('cli-table2');
+// connectng to the mysql database 
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -14,17 +15,17 @@ connection.connect(function(err) {
   if (err) throw err;
   
 });
-
+// populating items from the sql database
 function showItems() {
     connection.query("SELECT * From products", function(err, results){
         if (err) throw err;
-        console.log("===========================================");
-        console.log("============Items In Store=================");
-        console.log("===========================================");
+        var table = new Table({ head: ["Item ID", "Product Name", "Department", "Price", "Stock Quantity"] });
         for (i = 0; i < results.length; i++){
-            console.log("Item ID: " + results[i].id + " Product Name: " + results[i].product_name + " Department: " + results[i].department_name + " $" + results[i].price + " Left in Stock: " + results[i].stock_quantity)
+            table.push(
+                [results[i].id, results[i].product_name, results[i].department_name, "$" + results[i].price , results[i].stock_quantity]
+            );
         }
-        console.log("===========================================");
+        console.log(table.toString());
         startQuestion();
 
     })
@@ -47,31 +48,32 @@ function startQuestion() {
     ])
     .then(function(answer) {
 
-      connection.query("SELECT * FROM products WHERE id = ?", [answer.buyID], function(err,result){ 
+        connection.query("SELECT * FROM products WHERE id = ?", [answer.buyID], function(err,result){ 
        
-        if (answer.howMany > result[0].stock_quantity) {
-            console.log (answer.howMany);
-            console.log("insufficient quantity available try again");
-            startQuestion();
-         } else {
-             console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + answer.howMany * result[0].price);
+            if (answer.howMany > result[0].stock_quantity) {
+                
+                console.log("insufficient quantity available try again");
+                startQuestion();
+            } else {
+                console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + answer.howMany * result[0].price);
 
-             connection.query("Update products SET ? Where ?",
-            [
-             {
-                stock_quantity: result[0].stock_quantity - answer.howMany
-             },{
-                 id: answer.buyID
-             }
-            ], function(err) {
-                if (err) throw err;
-                newOrder();
+
+
+                connection.query("Update products SET ? Where ?",
+                    [
+                        {
+                            stock_quantity: result[0].stock_quantity - answer.howMany
+                        },{
+                            id: answer.buyID
+                        }
+                    ], function(err) {
+                        if (err) throw err;
+                        newOrder();
+                        }
+                )
             }
-            
-             )
-         }
        
-    });
+        });
     })
 }
 
