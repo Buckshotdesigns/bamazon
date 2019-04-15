@@ -25,11 +25,11 @@ function showItems() {
             console.log("Item ID: " + results[i].id + " Product Name: " + results[i].product_name + " Department: " + results[i].department_name + " $" + results[i].price + " Left in Stock: " + results[i].stock_quantity)
         }
         console.log("===========================================");
+        startQuestion();
 
     })
 };
 showItems();
-startQuestion();
 
 function startQuestion() {
   inquirer
@@ -46,7 +46,19 @@ function startQuestion() {
         }
     ])
     .then(function(answer) {
-      
-        if (answer.howMany > )
+
+      connection.query("SELECT * FROM products WHERE id = ?", [answer.buyID], function(err,result){ 
+        console.log (answer.buyID);
+        console.log (answer.howMany);
+        console.log(result[0].stock_quantity);
+        if (answer.howMany > result[0].stock_quantity) {
+            console.log (answer.howMany);
+            console.log("insufficient quantity available try again");
+            startQuestion();
+         } else {
+             console.log("youve ordered " + result[0].product_name);
+         }
+       
     });
+    })
 }
