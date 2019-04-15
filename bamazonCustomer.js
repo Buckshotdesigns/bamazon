@@ -48,17 +48,51 @@ function startQuestion() {
     .then(function(answer) {
 
       connection.query("SELECT * FROM products WHERE id = ?", [answer.buyID], function(err,result){ 
-        console.log (answer.buyID);
-        console.log (answer.howMany);
-        console.log(result[0].stock_quantity);
+       
         if (answer.howMany > result[0].stock_quantity) {
             console.log (answer.howMany);
             console.log("insufficient quantity available try again");
             startQuestion();
          } else {
-             console.log("youve ordered " + result[0].product_name);
+             console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + answer.howMany * result[0].price);
+
+             connection.query("Update products SET ? Where ?",
+            [
+             {
+                stock_quantity: result[0].stock_quantity - answer.howMany
+             },{
+                 id: answer.buyID
+             }
+            ], function(err) {
+                if (err) throw err;
+                newOrder();
+            }
+            
+             )
          }
        
     });
     })
+}
+
+function newOrder() {
+    inquirer
+    .prompt([
+        {
+         name: "newChoice",
+         type: "confirm",
+          message: "would you like to place another order"
+        }
+    ])
+    .then(function(answer) {
+
+        if(answer.newChoice){
+            showItems();
+        } else {
+            console.log("Thanks for shopping with Bamazon")
+            connection.end();
+        }
+
+    });
+    
 }
