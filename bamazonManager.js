@@ -77,6 +77,7 @@ function startQuestion() {
     };
 
     function inventoryAdd (){
+        viewProducts();
         inquirer
       .prompt([
           {

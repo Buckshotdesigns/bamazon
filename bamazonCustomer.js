@@ -38,22 +38,32 @@ function startQuestion() {
         {
          name: "buyID",
          type: "input",
-          message: "Which Item Id would you like to buy"
+          message: "Which Item Id would you like to buy?"
         },
         {
         name: "howMany",
         type: "input",
-        message: "How many would you like to buy ?"
+        message: "How many would you like to buy ?",
+        validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
         }
     ])
     .then(function(answer) {
 
         connection.query("SELECT * FROM products WHERE id = ?", [answer.buyID], function(err,result){ 
-       
-            if (answer.howMany > result[0].stock_quantity) {
+            if (!result.length) {
+                console.log("That is not a valid ID, Please enter a valid ID");
+                startQuestion();
+            } 
+           
+            else if (answer.howMany > result[0].stock_quantity) {
                 
                 console.log("insufficient quantity available try again");
-                startQuestion();
+                showItems();
             } else {
                 console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + answer.howMany * result[0].price);
                 connection.query("Update products SET ? Where ?",
