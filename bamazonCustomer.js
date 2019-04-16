@@ -65,11 +65,14 @@ function startQuestion() {
                 console.log("insufficient quantity available try again");
                 showItems();
             } else {
-                console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + answer.howMany * result[0].price);
+                var moneySpent = answer.howMany * result[0].price;
+                console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + moneySpent);
                 connection.query("Update products SET ? Where ?",
                     [
                         {
                             stock_quantity: result[0].stock_quantity - answer.howMany
+                        },{
+                            product_sales: moneySpent
                         },{
                             id: answer.buyID
                         }
