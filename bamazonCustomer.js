@@ -56,9 +56,6 @@ function startQuestion() {
                 startQuestion();
             } else {
                 console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + answer.howMany * result[0].price);
-
-
-
                 connection.query("Update products SET ? Where ?",
                     [
                         {
