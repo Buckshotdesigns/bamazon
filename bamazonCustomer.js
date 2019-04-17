@@ -19,10 +19,10 @@ connection.connect(function(err) {
 function showItems() {
     connection.query("SELECT * From products", function(err, results){
         if (err) throw err;
-        var table = new Table({ head: ["Item ID", "Product Name", "Department", "Price", "Stock Quantity"] });
+        var table = new Table({ head: ["Item ID", "Product Name", "Department", "Price", "Stock Quantity","Product Sales"] });
         for (i = 0; i < results.length; i++){
             table.push(
-                [results[i].id, results[i].product_name, results[i].department_name, "$" + results[i].price , results[i].stock_quantity]
+                [results[i].id, results[i].product_name, results[i].department_name, "$" + results[i].price , results[i].stock_quantity, results[i].product_sales]
             );
         }
         console.log(table.toString());
@@ -70,9 +70,8 @@ function startQuestion() {
                 connection.query("Update products SET ? Where ?",
                     [
                         {
-                            stock_quantity: result[0].stock_quantity - answer.howMany
-                        },{
-                            product_sales: moneySpent
+                            stock_quantity: result[0].stock_quantity - answer.howMany,
+                            product_sales: result[0].product_sales + moneySpent
                         },{
                             id: answer.buyID
                         }
@@ -80,6 +79,7 @@ function startQuestion() {
                         if (err) throw err;
                         newOrder();
                         }
+                        
                 )
             }
        
