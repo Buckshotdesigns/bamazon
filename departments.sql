@@ -1,8 +1,4 @@
-DROP DATABASE IF EXISTS supervisorDB;
 
-CREATE DATABASE supervisorDB;
-
-USE supervisorDB;
 
 CREATE TABLE departments (
   department_id INT NOT NULL AUTO_INCREMENT,

@@ -72,6 +72,7 @@ function startQuestion() {
                 moneySpent = answer.howMany * result[0].price;
                 currentDepartment = result[0].department_name;
                 console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + moneySpent);
+           
                 connection.query("Update products SET ? Where ?",
                     [
                         {
@@ -80,44 +81,45 @@ function startQuestion() {
                         },{
                             id: answer.buyID
                         }
-                    ], function(err) {
-                        if (err) throw err;
-                        logDepartmentSales();
-                        newOrder();
-                        }
+                    ], 
+                    
+                    function(err,result) {});
+                    // newOrder();
+                    departmentSales();
                         
-                )
             }
        
         });
     })
 }
 
-function newOrder() {
-    inquirer
-    .prompt([
-        {
-         name: "newChoice",
-         type: "confirm",
-          message: "would you like to place another order"
-        }
-    ])
-    .then(function(answer) {
 
-        if(answer.newChoice){
-            showItems();
-        } else {
-            console.log("Thanks for shopping with Bamazon")
-            connection.end();
-        }
+// function newOrder() {
+//     inquirer
+//     .prompt([
+//         {
+//          name: "newChoice",
+//          type: "confirm",
+//           message: "would you like to place another order"
+//         }
+//     ])
+//     .then(function(answer) {
 
-    });
+//         if(answer.newChoice){
+//             showItems();
+//         } else {
+//             console.log("Thanks for shopping with Bamazon")
+//             connection.end();
+//         }
+
+//     });
     
-}
+// }
 
-function logDepartmentSales() {
+function departmentSales() {
+   
     connection.query("SELECT * FROM departments WHERE department_name = ?", [currentDepartment], function(err, result){
-        salesUpdate = result[0].product_sales + moneySpent;
-
+      salesUpdate = result[0].product_sales + moneySpent;
+      console.log (salesUpdate);
     })
-}
+};
