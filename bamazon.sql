@@ -26,9 +26,3 @@ VALUES ("Sham Wow", "Household", 50, 25),
 ("Captain America Shield", "Sporting-Goods", 3, 175);
 
 
-
--- INSERT INTO products (flavor, price, quantity)
--- VALUES ("chocolate", 3.10, 120);
-
--- INSERT INTO products (flavor, price, quantity)
--- VALUES ("strawberry", 3.25, 75);
