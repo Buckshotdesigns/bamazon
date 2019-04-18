@@ -34,5 +34,9 @@ If you want to add to inventory it will as whci product id and how much
 Lastly if you want to add a new product you will enter product name, category, price, and how many.
 
 
+## bamazonSupervisor
+
+
+
  
 
