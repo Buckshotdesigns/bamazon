@@ -16,3 +16,7 @@ node bamazonSupervisor
 
 ###bamazonCustomer
 
+<img width="782" alt="Screen Shot 2019-04-18 at 3 16 59 PM" src="https://user-images.githubusercontent.com/31428973/56385450-248eea00-61ed-11e9-851f-a8da104701f5.png">
+ 
+ The user is prompted with a list of inventory and asked to select a product id and then the amount of that product. Once completed it shows the amount spent for that transaction and prompted for another transaction or to end.
+
