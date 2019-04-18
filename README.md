@@ -20,3 +20,7 @@ node bamazonSupervisor
  
  The user is prompted with a list of inventory and asked to select a product id and then the amount of that product. Once completed it shows the amount spent for that transaction and prompted for another transaction or to end.
 
+ ### bamazonManager
+
+ 
+

@@ -45,7 +45,8 @@ function startQuestion() {
             } else if (answer.whatOption === "2) View low inventory") {
                 lowInventory();
             } else if (answer.whatOption === "3) Add to inventory") {
-                inventoryAdd();
+                viewProducts();
+                setTimeout(inventoryAdd, 1000);
             } else if (answer.whatOption === "4) Add new product") {
                 productAdd();
             }
@@ -77,7 +78,6 @@ function startQuestion() {
     };
 
     function inventoryAdd (){
-        viewProducts();
         inquirer
       .prompt([
           {
@@ -90,6 +90,7 @@ function startQuestion() {
             type: "input",
              message: "How many would you like to add?"
           }
+          
       ])
       .then(function(answer) {
         connection.query("Select * FROM products WHERE id = ?", [answer.item], function (err,results){
