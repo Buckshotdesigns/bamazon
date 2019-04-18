@@ -48,6 +48,17 @@ function showDepartments() {
             );
         }
         console.log(table.toString());
+    // var query = "SELECT departments.department_id, ";
+    // query += "departments.department_name, ";
+    // query += "FORMAT(departments.overhead_costs, 2) AS overhead_costs, ";
+    // query += "FORMAT(SUM(IFNULL(departments.product_sales,0)), 2) AS product_sales, ";
+    // query += "FORMAT(SUM(IFNULL(departments.product_sales,0))-overhead_costs, 2) AS total_profit ";
+    // query += "FROM departments ";
+    // query += "LEFT JOIN products ON departments.department_name = products.department_name ";
+    // query += "GROUP BY departments.department_name ";
+    // query += "ORDER BY department_id;"
+    // connection.query(query, function(err, result) {
+      if (err) throw err;
         newOrder();
     })
 };
