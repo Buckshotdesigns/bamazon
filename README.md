@@ -36,6 +36,10 @@ Lastly if you want to add a new product you will enter product name, category, p
 
 ## bamazonSupervisor
 
+<img width="582" alt="Screen Shot 2019-04-18 at 3 50 00 PM" src="https://user-images.githubusercontent.com/31428973/56387196-af71e380-61f1-11e9-97ca-a389b7b66edb.png">
+
+
+
 
 
  
