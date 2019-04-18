@@ -2,12 +2,11 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require('cli-table2');
-// connectng to the mysql database 
-
+// global variables that are calculated within functions
 var currentDepartment;
 var salesUpdate;
 var moneySpent;
-
+// connectng to the mysql database 
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -15,10 +14,8 @@ var connection = mysql.createConnection({
   password: "password123",
   database: "bamazonDB"
 });
-
 connection.connect(function(err) {
   if (err) throw err;
-  
 });
 // populating items from the sql database
 function showItems() {
@@ -63,9 +60,7 @@ function startQuestion() {
                 console.log("That is not a valid ID, Please enter a valid ID");
                 startQuestion();
             } 
-           
             else if (answer.howMany > result[0].stock_quantity) {
-                
                 console.log("insufficient quantity available try again");
                 showItems();
             } else {
@@ -81,7 +76,6 @@ function startQuestion() {
                             id: answer.buyID
                         }
                     ], 
-                    
                     function(err,result) {});
                     newOrder();
                     departmentSales();                   
@@ -101,7 +95,6 @@ function newOrder() {
         }
     ])
     .then(function(answer) {
-
         if(answer.newChoice){
             showItems();
         } else {
@@ -112,7 +105,6 @@ function newOrder() {
 }
 
 function departmentSales() {
-   
     connection.query("SELECT * FROM departments WHERE department_name = ?", [currentDepartment], function(err, result){
       salesUpdate = result[0].product_sales + moneySpent;
      departmentTable();
@@ -124,6 +116,6 @@ function departmentTable() {
         product_sales: salesUpdate
     },{
         department_name: currentDepartment
-
-    }], function(err, result){});
+    }], 
+    function(err, result){});
 };
