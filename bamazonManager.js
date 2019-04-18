@@ -41,7 +41,7 @@ function startQuestion() {
       .then(function(answer) {
             if (answer.whatOption === "1) View products for sale") {
                 viewProducts();
-                followUp();
+                setTimeout(followUp, 1000);
             } else if (answer.whatOption === "2) View low inventory") {
                 lowInventory();
             } else if (answer.whatOption === "3) Add to inventory") {
