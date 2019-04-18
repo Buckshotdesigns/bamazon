@@ -7,6 +7,7 @@ var Table = require('cli-table2');
 var currentDepartment;
 var salesUpdate;
 var moneySpent;
+
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -31,7 +32,6 @@ function showItems() {
         }
         console.log(table.toString());
         startQuestion();
-
     })
 };
 showItems();
@@ -72,7 +72,6 @@ function startQuestion() {
                 moneySpent = answer.howMany * result[0].price;
                 currentDepartment = result[0].department_name;
                 console.log("youve ordered " + answer.howMany + " " + result[0].product_name + " for the amount of $" + moneySpent);
-           
                 connection.query("Update products SET ? Where ?",
                     [
                         {
@@ -84,42 +83,47 @@ function startQuestion() {
                     ], 
                     
                     function(err,result) {});
-                    // newOrder();
-                    departmentSales();
-                        
+                    newOrder();
+                    departmentSales();                   
             }
-       
         });
     })
 }
 
 
-// function newOrder() {
-//     inquirer
-//     .prompt([
-//         {
-//          name: "newChoice",
-//          type: "confirm",
-//           message: "would you like to place another order"
-//         }
-//     ])
-//     .then(function(answer) {
+function newOrder() {
+    inquirer
+    .prompt([
+        {
+         name: "newChoice",
+         type: "confirm",
+          message: "would you like to place another order"
+        }
+    ])
+    .then(function(answer) {
 
-//         if(answer.newChoice){
-//             showItems();
-//         } else {
-//             console.log("Thanks for shopping with Bamazon")
-//             connection.end();
-//         }
-
-//     });
-    
-// }
+        if(answer.newChoice){
+            showItems();
+        } else {
+            console.log("Thanks for shopping with Bamazon")
+            connection.end();
+        }
+    });    
+}
 
 function departmentSales() {
    
     connection.query("SELECT * FROM departments WHERE department_name = ?", [currentDepartment], function(err, result){
       salesUpdate = result[0].product_sales + moneySpent;
-      console.log (salesUpdate);
+     departmentTable();
     })
+};
+
+function departmentTable() {
+    connection.query("UPDATE departments SET ? WHERE ?", [{
+        product_sales: salesUpdate
+    },{
+        department_name: currentDepartment
+
+    }], function(err, result){});
 };
